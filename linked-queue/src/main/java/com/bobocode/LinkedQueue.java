@@ -9,14 +9,38 @@ package com.bobocode;
  */
 public class LinkedQueue<T> implements Queue<T> {
 
+    final static class Node<T> {
+        private T element;
+        private Node<T> next;
+
+        public Node(T element) {
+            this.element = element;
+        }
+        static <T> Node<T> valueOf(T element) {
+            return new Node<>(element);
+        }
+    }
+
+    private Node<T> head;
+    private Node<T> tail;
+    private int size;
+
     /**
      * Adds an element to the end of the queue.
      *
      * @param element the element to add
      */
     public void add(T element) {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        Node<T> node = Node.valueOf(element);
+        if (head == null) {
+            head = tail = node;
+        } else {
+            tail.next = node;
+            tail = node;
+        }
+        size++;
     }
+
 
     /**
      * Retrieves and removes queue head.
@@ -24,7 +48,15 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an element that was retrieved from the head or null if queue is empty
      */
     public T poll() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        if (head != null) {
+            T element = head.element;
+            head = head.next;
+            if (head == null) {
+                tail = null;
+            }
+            size--;
+            return element;
+        } else return null;
     }
 
     /**
@@ -33,7 +65,7 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an integer value that is a size of queue
      */
     public int size() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        return size;
     }
 
     /**
@@ -42,6 +74,6 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return {@code true} if the queue is empty, returns {@code false} if it's not
      */
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        return head == null;
     }
 }
